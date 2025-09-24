@@ -1,0 +1,5 @@
+{
+  "name": "AI Fitness Planner",
+  "description": "Generate personalized workout and dietary plans using AI. Input your goals, preferences, and personal details to receive a custom fitness plan, which you can then download as a PDF.",
+  "requestFramePermissions": []
+}
