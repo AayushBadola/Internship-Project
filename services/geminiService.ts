@@ -1,11 +1,31 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { UserData, GeneratedPlan } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
+// This function safely retrieves the API key and initializes the AI client.
+// It prevents the app from crashing in a browser environment where `process` is not defined.
+const initializeAiClient = () => {
+    try {
+        // This line is designed for environments where `process` is defined.
+        // In a browser, it will throw a ReferenceError, which we catch.
+        // The user must configure their environment variables correctly on their hosting platform (e.g., Vercel).
+        if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+            return {
+                ai: new GoogleGenAI({ apiKey: process.env.API_KEY }),
+                error: null,
+            };
+        }
+    } catch (e) {
+        // Catches the "process is not defined" ReferenceError in the browser.
+    }
+    
+    // If we've reached this point, the API key was not found.
+    return {
+        ai: null,
+        error: "API key is not configured. Please set up the API_KEY environment variable in your deployment platform.",
+    };
+};
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const { ai, error: initError } = initializeAiClient();
 
 const planSchema = {
     type: Type.OBJECT,
@@ -78,6 +98,11 @@ const planSchema = {
 
 
 export const generatePlan = async (userData: UserData): Promise<GeneratedPlan> => {
+    // If initialization failed, throw the captured error.
+    if (initError || !ai) {
+        throw new Error(initError || "AI client failed to initialize.");
+    }
+    
     const additionalInfoPrompt = userData.additionalInfo
         ? `- Additional Considerations: ${userData.additionalInfo} (Please take these into account, especially for the dietary plan, avoiding specified allergens and considering any physical limitations for the workout plan).`
         : '';
