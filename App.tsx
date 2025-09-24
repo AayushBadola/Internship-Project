@@ -5,6 +5,7 @@ import Header from './components/Header';
 import UserInputForm from './components/UserInputForm';
 import PlanDisplay from './components/PlanDisplay';
 import Loader from './components/Loader';
+import DumbbellIcon from './components/icons/DumbbellIcon';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,34 +30,36 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans antialiased">
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <div className="lg:col-span-1">
             <UserInputForm onSubmit={handleGeneratePlan} isLoading={isLoading} />
           </div>
-          <div className="lg:col-span-8">
-            <div className="bg-gray-800 rounded-2xl shadow-2xl p-6 min-h-[400px] flex flex-col justify-center items-center transition-all duration-500">
-              {isLoading && <Loader />}
+          <div className="lg:col-span-2">
+            <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 transition-all duration-500 h-full">
+              {isLoading && <div className="flex justify-center items-center h-full min-h-[500px]"><Loader /></div>}
               {error && (
-                <div className="text-center text-red-400">
+                <div className="text-left text-red-400">
                   <h3 className="text-xl font-bold mb-2">Oops! Something went wrong.</h3>
                   <p>{error}</p>
                 </div>
               )}
               {plan && currentUserData && <PlanDisplay plan={plan} userData={currentUserData} />}
               {!isLoading && !error && !plan && (
-                 <div className="text-center text-gray-400">
-                    <h2 className="text-2xl font-bold text-white mb-2">Welcome to Your AI Fitness Planner</h2>
-                    <p>Fill out the form to generate your personalized workout and diet plan.</p>
+                 <div className="text-left text-slate-400">
+                    <DumbbellIcon className="w-16 h-16 text-emerald-400 mb-6" />
+                    <h2 className="text-4xl font-bold text-white mb-4">Your Personalized Fitness Journey Starts Here</h2>
+                    <p className="text-lg">Complete the profile on the left to let our AI craft a unique workout and diet plan tailored just for you.</p>
+                    <p className="mt-6 text-sm text-slate-500">The more details you provide, the better your plan will be!</p>
                 </div>
               )}
             </div>
           </div>
         </div>
       </main>
-      <footer className="text-center py-4 text-gray-500 text-sm">
+      <footer className="text-center py-4 text-slate-500 text-sm">
         <p>Powered by Gemini AI. Plans are for informational purposes only. Consult a professional before starting any new fitness regimen.</p>
       </footer>
     </div>
