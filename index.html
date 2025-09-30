@@ -33,6 +33,22 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #475569; /* slate-600 */
   }
+
+  /* Animation for the fun facts on the loader */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-subtle {
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+
 </style>
 </head>
   <body class="bg-slate-900 text-white">
