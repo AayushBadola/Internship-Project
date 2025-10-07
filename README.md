@@ -52,11 +52,12 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 3.  **Set up environment variables**
     -   This application requires a Google Gemini API key to function.
-    -   Create a file named `.env` in the root of the project directory.
-    -   Add your API key to this file as shown below:
+    -   Create a file named `.env.local` in the root of the project directory.
+    -   Add your API key to this file. **It must be prefixed with `VITE_`**.
     ```env
-    API_KEY="YOUR_GEMINI_API_KEY"
+    VITE_API_KEY="YOUR_GEMINI_API_KEY"
     ```
+    -   For **deployment on Vercel**, go to your project's "Settings" -> "Environment Variables" and add a variable named `VITE_API_KEY` with your Gemini API key as the value.
     -   You can obtain a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 
 4.  **Run the development server**

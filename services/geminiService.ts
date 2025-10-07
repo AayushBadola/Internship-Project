@@ -1,24 +1,21 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { UserData, GeneratedPlan } from '../types';
 
 // This function safely retrieves the API key and initializes the AI client.
-// It prevents the app from crashing in a browser environment where `process` is not defined.
 const initializeAiClient = () => {
-    try {
-        // This line is designed for environments where `process` is defined.
-        // In a browser, it will throw a ReferenceError, which we catch.
-        // The user must configure their environment variables correctly on their hosting platform (e.g., Vercel).
-        if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-            return {
-                ai: new GoogleGenAI({ apiKey: process.env.API_KEY }),
-                error: null,
-            };
-        }
-    } catch (e) {
-        // Catches the "process is not defined" ReferenceError in the browser.
+    // Fix: Use process.env.API_KEY as per Gemini API guidelines.
+    // This variable is assumed to be configured in the execution environment.
+    const apiKey = process.env.API_KEY;
+
+    if (apiKey) {
+        return {
+            ai: new GoogleGenAI({ apiKey }),
+            error: null,
+        };
     }
     
-    // If we've reached this point, the API key was not found.
+    // If the API key is not set, this error will be shown.
     return {
         ai: null,
         error: "API key is not configured. Please set up the API_KEY environment variable in your deployment platform.",
